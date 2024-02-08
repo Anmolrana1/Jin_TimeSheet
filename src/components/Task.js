@@ -101,6 +101,7 @@ function Task({ setdata }) {
               <br />
               <div className='tag1'>
                 <select>
+                 <option>Project</option>
                   <option>BAU_002 People</option>
                   <option>BAU_003 Delivery</option>
                   <option>BAU_004 Sales</option>
@@ -108,6 +109,7 @@ function Task({ setdata }) {
               </div>
               <div className='tag1'>
                 <select>
+                   <option>Task</option>
                   <option>Employee Wellbeing</option>
                   <option>Human Resources</option>
                   <option>IDE</option>
@@ -118,7 +120,7 @@ function Task({ setdata }) {
               </div>
               {["mon", "tue", "wed", "thr", "fri", "sat", "sun"].map((day) => (
                 <div key={day} className='days'>
-                  <input type='text' maxLength='1' onChange={(e) => handlemon(e, item.id, day)} />
+                  <input type='text'  onChange={(e) => handlemon(e, item.id, day)} />
                 </div>
               ))}
               <div className='days'>{weakTotal.find((totalItem) => totalItem.id === item.id)?.total || 0}</div>
@@ -148,6 +150,7 @@ function Task({ setdata }) {
               <br />
               <div className='tag1'>
                 <select>
+                <option>Project</option>
                   <option>BAU_002 People</option>
                   <option>BAU_003 Delivery</option>
                   <option>BAU_004 Sales</option>
@@ -155,6 +158,7 @@ function Task({ setdata }) {
               </div>
               <div className='tag1'>
                 <select>
+            <option>Task</option>
                   <option>Employee Wellbeing</option>
                   <option>Human Resources</option>
                   <option>IDE</option>
@@ -165,7 +169,7 @@ function Task({ setdata }) {
               </div>
               {["mon", "tue", "wed", "thr", "fri", "sat", "sun"].map((day) => (
                 <div key={day} className='days'>
-                  <input type='text' maxLength='1' onChange={(e) => handlemon(e, item.id, day)} />
+                  <input type='text'  onChange={(e) => handlemon(e, item.id, day)} />
                 </div>
               ))}
               <div className='days'>{weakTotal.find((totalItem) => totalItem.id === item.id)?.total || 0}</div>
