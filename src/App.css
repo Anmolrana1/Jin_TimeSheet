@@ -19,7 +19,8 @@ body {
     display: flex;
     width: 100%;
     height: 100%;  
-    background: linear-gradient( rgba(21, 13, 107, 0.9) 0%, rgba(9,9,121,1) 35%, rgba(188, 16, 80, 0.9) 100%);
+    background: rgb(251,251,251);
+background: linear-gradient(0deg, rgba(251,251,251,1) 0%, rgba(208,35,162,1) 0%, rgba(204,166,215,1) 0%, rgba(246,246,246,1) 0%, rgba(85,38,242,1) 53%, rgba(15,80,129,1) 100%);
     flex-direction: column;
     align-items: stretch;
 }
