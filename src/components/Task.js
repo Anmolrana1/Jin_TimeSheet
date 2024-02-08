@@ -1,13 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import '../style/Task.css';
-import Buttons from './Buttons';
-import SumData from './SumData';
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from "react";
+import "../style/Task.css";
+import Buttons from "./Buttons";
+import SumData from "./SumData";
+import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Task({ setdata }) {
-  const [days, setDays] = useState([{ id: 0, mon: 0, tue: 0, wed: 0, thr: 0, fri: 0, sat: 0, sun: 0 }]);
-  const [daysValue, setDaysValue] = useState({ mon: 0, tue: 0, wed: 0, thr: 0, fri: 0, sat: 0, sun: 0 });
+  const [days, setDays] = useState([
+    {
+      id: 0,
+      project: "",
+      task: "",
+      mon: 0,
+      tue: 0,
+      wed: 0,
+      thr: 0,
+      fri: 0,
+      sat: 0,
+      sun: 0,
+    },
+  ]);
+  const [daysValue, setDaysValue] = useState({
+    mon: 0,
+    tue: 0,
+    wed: 0,
+    thr: 0,
+    fri: 0,
+    sat: 0,
+    sun: 0,
+  });
   const [weakTotal, setWeakTotal] = useState([{ id: 0, total: 0 }]);
   const [Total, setTotal] = useState(0);
 
@@ -19,9 +40,26 @@ function Task({ setdata }) {
       const existingItem = updatedDays.find((item) => item.id === itemId);
 
       if (existingItem) {
-        existingItem[day] = parseInt(value) || 0;
-      } else {
-        const newItem = { id: itemId, [day]: parseInt(value) || 0 };
+        if (day === "project") {
+          existingItem[day] = value;
+        } else if (day === "task") {
+          existingItem[day] = value;
+        } else {
+          existingItem[day] = parseInt(value) || 0;
+        }
+      } else  {
+        const newItem = {
+          id: itemId,
+          project: day === "project" ? value : "",
+          task: day === "task" ? value : "",
+          mon: day === "mon" ? parseInt(value) || 0 : 0,
+          tue: day === "tue" ? parseInt(value) || 0 : 0,
+          wed: day === "wed" ? parseInt(value) || 0 : 0,
+          thr: day === "thr" ? parseInt(value) || 0 : 0,
+          fri: day === "fri" ? parseInt(value) || 0 : 0,
+          sat: day === "sat" ? parseInt(value) || 0 : 0,
+          sun: day === "sun" ? parseInt(value) || 0 : 0,
+        };
         updatedDays.push(newItem);
       }
 
@@ -40,8 +78,9 @@ function Task({ setdata }) {
     days.forEach((item) => {
       let total = 0;
       for (const day in item) {
-        if (day !== 'id') {
-          newDayValue[day] = (newDayValue[day] || 0) + (parseInt(item[day]) || 0);
+        if (day !== "id" || day !== "project" || day !== "task") {
+          newDayValue[day] =
+            (newDayValue[day] || 0) + (parseInt(item[day]) || 0);
           total = total + (parseInt(item[day]) || 0);
         }
       }
@@ -50,7 +89,7 @@ function Task({ setdata }) {
 
     let sum = 0;
     newWeakTotal.forEach((item) => {
-      if (item.id !== 'id') {
+      if (item.id !== "id") {
         sum = sum + item.total;
       }
     });
@@ -68,14 +107,19 @@ function Task({ setdata }) {
   }, [contentItems.length]);
 
   const handleAddContentItem = () => {
-    setContentItems((prevItems) => [...prevItems, { id: prevItems.length + 1 }]);
+    setContentItems((prevItems) => [
+      ...prevItems,
+      { id: prevItems.length + 1 },
+    ]);
   };
 
   const handleRemoveContentItem = (itemId) => {
-    setContentItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+    setContentItems((prevItems) =>
+      prevItems.filter((item) => item.id !== itemId)
+    );
   };
 
-  const [salesActivity, setsalesActivity] = useState([{ id: 'a1' }]);
+  const [salesActivity, setsalesActivity] = useState([{ id: "a1" }]);
   const [leng, setleng] = useState(salesActivity.length);
 
   useEffect(() => {
@@ -83,54 +127,73 @@ function Task({ setdata }) {
   }, [salesActivity.length]);
 
   const handlesalesActivity = () => {
-    setsalesActivity((prevItems) => [...prevItems, { id: 'a' + (prevItems.length + 1) }]);
+    setsalesActivity((prevItems) => [
+      ...prevItems,
+      { id: "a" + (prevItems.length + 1) },
+    ]);
   };
 
   const handleRemovesalesActivity = (itemId) => {
-    setsalesActivity((prevItems) => prevItems.filter((item) => item.id !== itemId));
+    setsalesActivity((prevItems) =>
+      prevItems.filter((item) => item.id !== itemId)
+    );
   };
 
   return (
     <>
       {/* BAU Activity */}
-      <div className='content_items'>
-        <div className='tag'>BAU Activity</div>
-        <div style={{ width: '100%' }}>
+      <div className="content_items">
+        <div className="tag">BAU Activity</div>
+        <div style={{ width: "100%" }}>
           {contentItems.map((item) => (
-            <div className='project_info' key={item.id}>
+            <div className="project_info" key={item.id}>
               <br />
-              <div className='tag1'>
-                <select>
-                 <option>Project</option>
-                  <option>BAU_002 People</option>
+              <div className="tag1">
+                <select onChange={(e) => handlemon(e, item.id, "project")}>
+                  <option>project</option>
                   <option>BAU_003 Delivery</option>
                   <option>BAU_004 Sales</option>
                 </select>
               </div>
-              <div className='tag1'>
-                <select>
-                   <option>Task</option>
-                  <option>Employee Wellbeing</option>
+              <div className="tag1">
+                <select onChange={(e) => handlemon(e, item.id, "task")}>
+                  <option>Task</option>
                   <option>Human Resources</option>
                   <option>IDE</option>
                 </select>
               </div>
-              <div className='tag1'>
-                <input type='text' />
+              <div className="tag1">
+                <input type="text" />
               </div>
               {["mon", "tue", "wed", "thr", "fri", "sat", "sun"].map((day) => (
-                <div key={day} className='days'>
-                  <input type='text'  onChange={(e) => handlemon(e, item.id, day)} />
+                <div key={day} className="days">
+                  <input
+                    type="text"
+                    maxLength="1"
+                    onChange={(e) => handlemon(e, item.id, day)}
+                  />
                 </div>
               ))}
-              <div className='days'>{weakTotal.find((totalItem) => totalItem.id === item.id)?.total || 0}</div>
-              <div className='content_button'>
-                <div className='content_button_type' onClick={handleAddContentItem}>
-                  <FontAwesomeIcon icon={faPlus} style={{ fontSize: '20px' }} />
+              <div className="days">
+                {weakTotal.find((totalItem) => totalItem.id === item.id)
+                  ?.total || 0}
+              </div>
+              <div className="content_button">
+                <div
+                  className="content_button_type"
+                  onClick={handleAddContentItem}
+                >
+                  <FontAwesomeIcon icon={faPlus} style={{ fontSize: "20px" }} />
                 </div>
                 {len > 1 ? (
-                  <div className='content_button_type' onClick={() => handleRemoveContentItem(item.id)}>
-                    <FontAwesomeIcon icon={faMinus} style={{ fontSize: '20px' }} />
+                  <div
+                    className="content_button_type"
+                    onClick={() => handleRemoveContentItem(item.id)}
+                  >
+                    <FontAwesomeIcon
+                      icon={faMinus}
+                      style={{ fontSize: "20px" }}
+                    />
                   </div>
                 ) : (
                   <div></div>
@@ -142,44 +205,60 @@ function Task({ setdata }) {
       </div>
 
       {/* Sales Activity */}
-      <div className='content_items'>
-        <div className='tag'>Sales Activity</div>
-        <div style={{ width: '100%' }}>
+      <div className="content_items">
+        <div className="tag">Sales Activity</div>
+        <div style={{ width: "100%" }}>
           {salesActivity.map((item) => (
-            <div className='project_info' key={item.id}>
+            <div className="project_info" key={item.id}>
               <br />
-              <div className='tag1'>
-                <select>
-                <option>Project</option>
+              <div className="tag1">
+                <select onChange={(e) => handlemon(e, item.id, "project")}>
+                  <option>project</option>
                   <option>BAU_002 People</option>
                   <option>BAU_003 Delivery</option>
                   <option>BAU_004 Sales</option>
                 </select>
               </div>
-              <div className='tag1'>
-                <select>
-            <option>Task</option>
+              <div className="tag1">
+                <select onChange={(e) => handlemon(e, item.id, "task")}>
+                  <option>Task</option>
                   <option>Employee Wellbeing</option>
                   <option>Human Resources</option>
                   <option>IDE</option>
                 </select>
               </div>
-              <div className='tag1'>
-                <input type='text' />
+              <div className="tag1">
+                <input type="text" />
               </div>
               {["mon", "tue", "wed", "thr", "fri", "sat", "sun"].map((day) => (
-                <div key={day} className='days'>
-                  <input type='text'  onChange={(e) => handlemon(e, item.id, day)} />
+                <div key={day} className="days">
+                  <input
+                    type="text"
+                    maxLength="1"
+                    onChange={(e) => handlemon(e, item.id, day)}
+                  />
                 </div>
               ))}
-              <div className='days'>{weakTotal.find((totalItem) => totalItem.id === item.id)?.total || 0}</div>
-              <div className='content_button'>
-                <div className='content_button_type' onClick={handlesalesActivity}>
-                  <FontAwesomeIcon icon={faPlus} style={{ fontSize: '20px' }} />
+              <div className="days">
+                {weakTotal.find((totalItem) => totalItem.id === item.id)
+                  ?.total || 0}
+              </div>
+              <div className="content_button">
+                <div
+                  className="content_button_type"
+                  onClick={handlesalesActivity}
+                >
+                  <FontAwesomeIcon icon={faPlus} style={{ fontSize: "20px" }} />
                 </div>
                 {leng > 1 ? (
-                  <div className='content_button_type' onClick={() => handleRemovesalesActivity(item.id)}>
-                    <FontAwesomeIcon icon={faMinus} style={{ fontSize: '20px' }} />
+                  <div
+                    className="content_button_type"
+                    onClick={() => handleRemovesalesActivity(item.id)}
+                  >
+                    <FontAwesomeIcon
+                      icon={faMinus}
+                      style={{ fontSize: "20px" }}
+                    />
                   </div>
                 ) : (
                   <div></div>
@@ -191,8 +270,8 @@ function Task({ setdata }) {
       </div>
 
       {/* Total Hours */}
-     <SumData daysValue={daysValue} Total={Total}/>
-      <Buttons />
+      <SumData daysValue={daysValue} Total={Total} />
+      <Buttons days={days} />
     </>
   );
 }
