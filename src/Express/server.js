@@ -1,27 +1,29 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const cors = require("cors"); 
-const fs = require("fs");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const routes = require("./router");
 
 const app = express();
 const port = 3001;
 
-app.use(cors()); 
+app.use(cors());
 app.use(bodyParser.json());
 
-app.post("/api/saveData", (req, res) => {
-  const daysData = req.body;
+// MongoDB connection
+mongoose.connect("mongodb+srv://Anmolrana:123Anmol@cluster0.3mz9fpq.mongodb.net/");
+const db = mongoose.connection;
 
-  fs.writeFile("data.json", JSON.stringify(daysData), (err) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send("Error saving data");
-    } else {
-      res.status(200).send("Data saved successfully");
-    }
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
+db.once("open", () => {
+  console.log("Connected to MongoDB");
+
+
+app.use("/api",routes); 
+  
+
+
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
   });
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
 });
